@@ -11,7 +11,8 @@
 	;     │   └── Gas
 	;     ├── edificio
 	;     │   ├── CentroDeMando
-	;     │   └── Barracones
+	;     │   ├── Barracones
+	;     │   └── Extractor
 	;     └── unit
 	;         └── VCE
 	; Hemos definido tres tipos troncales del dominio:
@@ -20,19 +21,25 @@
 	(:types
 		loc entidad - object
 		edificio unidad recurso - entidad
+
+		; tipos para identificar las constantes
+		tipoEdificio - edificio
+		tipoRecurso - recurso
+		tipoUnidad - unidad
 	)
 	; El resto de tipos de mayor granularidad los definimos como constantes
 	(:constants
 		; recursos
-		Mineral - recurso
-		Gas - recurso
+		Mineral - tipoRecurso
+		Gas - tipoRecurso
 
 		; edificios
-		CentroDeMando - edificio
-		Barracones - edificio
+		CentroDeMando - tipoEdificio
+		Barracones - tipoEdificio
+		Extractor - tipoEdificio
 
 		; unidades
-		VCE - unidad
+		VCE - tipoUnidad
 	)
 
 	; Definimos los predicados del dominio
@@ -52,8 +59,17 @@
 		; para indicar que una unidad (en este caso un VCE) esta extrayendo un recurso
 		(extrayendo ?vce - unidad ?res - recurso)
 
-		; para indicar que una unidad esta ya asignada
-		(asignado ?unit - unidad)
+		; para indicar que una unidad no esta extrayendo
+		(libre ?unit - unidad)
+
+		; para indicar que recurso necesita un determinado edificio
+		(necesita-recurso ?b - edificio ?res - recurso)
+
+		; para indicar que se posee de un determinado tipo de recurso
+		(hay-recurso ?res - tipoRecurso)
+
+		; para indicar que tipo de edificio es
+		(edificio-es ?b - edificio ?tipoed - tipoEdificio)
 	)
 
 	; Definimos la serie de acciones que se pueden realizar
@@ -71,7 +87,7 @@
 			(camino ?from ?to)
 			;;; la unidad debe de estar libre, es decir, no debe
 			;;; estar extrayendo ningun recurso
-			(not (asignado ?unit))
+			(libre ?unit)
 		)
 		:effect (and
 			;;; la unidad ahora esta en la localizacion destino
@@ -93,13 +109,50 @@
 			;;; el recurso debe de estar asignado a tal localizacion
 			(recurso-asignado-en ?res ?loc)
 			;;; el VCE no debe de estar extrayendo ningun recurso, debe estar libre
-			(not (asignado ?vce))
+			(libre ?vce)
+
+			;;; Si hay Gas Vespano en la localizacion, entonces debe haber un
+			;;; Extractor en esa la localizacion:
+			;;; recurso-en(Gas,loc) -> entidad-en(Extractor,loc) === not recurso-en(Gas,loc) \/ entidad-en(Extractor, loc)
+			(or
+				(not (recurso-asignado-en Gas ?loc))
+				(exists
+					(?b - edificio)
+					(and (edificio-es ?b Extractor) (entidad-en ?b ?loc))
+				)
+			)
 		)
 		:effect (and
 			;;; el VCE deja de estar libre
-			(asignado ?vce)
+			(not (libre ?vce))
 			;;; el VCE pasa a estar extrayendo el recurso
 			(extrayendo ?vce ?res)
+			;;; se extrae recurso, luego se posee de tal recurso
+			(hay-recurso ?res)
+		)
+	)
+
+	;; Accion: CONSTRUIR, ordena a un VCE libre que construya un edificio en una localización
+	;; Parametros: Unidad, Edificio, Localizacion, Recurso
+	(:action CONSTRUIR
+		:parameters (?vce - unidad ?b - edificio ?loc - loc ?res - recurso)
+		:precondition (and
+			;; La unidad debe de estar libre
+			(libre ?vce)
+			;; La unidad debe de estar en la localizacion
+			(entidad-en ?vce ?loc)
+			;; El edificio que hay que construir no debe de estar ya construido
+			(not (construido ?b))
+			;; El edificio necesita el recurso
+			(necesita-recurso ?b ?res)
+			;; se posee tal recurso
+			(hay-recurso ?res)
+		)
+		:effect (and
+			;; El edificio se ha construido
+			(construido ?b)
+			;; El edificio ademas se encuentra en la localizacion
+			(entidad-en ?b ?loc)
 		)
 	)
 )

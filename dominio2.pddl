@@ -1,4 +1,4 @@
-(define (domain dominio_1)
+(define (domain dominio_2)
 	; Definimos los requirements para definir el dominio
 	(:requirements :strips :typing :adl :fluents)
 
@@ -19,7 +19,6 @@
 	; - entity: un tipo que engloba todo objeto "fisico" en el mundo, esto incluye recursos, edificios y unidades.
 	(:types
 		loc entidad - object
-		; TODO: esto puede estar mal
 		edificio unidad recurso - entidad
 	)
 	; El resto de tipos de mayor granularidad los definimos como constantes

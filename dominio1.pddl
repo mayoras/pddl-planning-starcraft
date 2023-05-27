@@ -52,7 +52,7 @@
 		; para indicar que una unidad (en este caso un VCE) esta extrayendo un recurso
 		(extrayendo ?vce - unidad ?res - recurso)
 
-		; para indicar que una unidad esta ya asignada
+		; para indicar que una unidad no esta extrayendo
 		(libre ?unit - unidad)
 	)
 

@@ -7,7 +7,7 @@
 	)
 
 	(:init
-		; representacion del mapa de Terran
+		; mapa de Terran
 		(camino loc11 loc12)
 		(camino loc12 loc11)
 		(camino loc11 loc21)
@@ -51,9 +51,6 @@
 		; las unidades VCE1 y VCE2 no estan asignadas
 		(libre VCE1)
 		(libre VCE2)
-
-		; Establecemos los edificios construidos (Extractor1 aunque existe no esta construido)
-		(construido CentroDeMando1)
 
 		; Establecemos el tipo de los edificios
 		(edificio-es Extractor1 Extractor)

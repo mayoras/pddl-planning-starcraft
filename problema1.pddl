@@ -48,7 +48,7 @@
 		(entidad-en VCE1 loc11)
 
 		; la unidad VCE1 no esta asignada
-		(not (asignado VCE1))
+		(libre VCE1)
 
 		; existen dos recursos de tipo mineral en loc24 y en loc44
 		(recurso-asignado-en Mineral loc24)

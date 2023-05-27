@@ -53,7 +53,7 @@
 		(extrayendo ?vce - unidad ?res - recurso)
 
 		; para indicar que una unidad esta ya asignada
-		(asignado ?unit - unidad)
+		(libre ?unit - unidad)
 	)
 
 	; Definimos la serie de acciones que se pueden realizar
@@ -71,7 +71,7 @@
 			(camino ?from ?to)
 			;;; la unidad debe de estar libre, es decir, no debe
 			;;; estar extrayendo ningun recurso
-			(not (asignado ?unit))
+			(libre ?unit)
 		)
 		:effect (and
 			;;; la unidad ahora esta en la localizacion destino
@@ -93,11 +93,11 @@
 			;;; el recurso debe de estar asignado a tal localizacion
 			(recurso-asignado-en ?res ?loc)
 			;;; el VCE no debe de estar extrayendo ningun recurso, debe estar libre
-			(not (asignado ?vce))
+			(libre ?vce)
 		)
 		:effect (and
 			;;; el VCE deja de estar libre
-			(asignado ?vce)
+			(not (libre ?vce))
 			;;; el VCE pasa a estar extrayendo el recurso
 			(extrayendo ?vce ?res)
 		)

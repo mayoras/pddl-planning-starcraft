@@ -159,7 +159,8 @@
 						;;; filtramos para el tipo de nuestro edificio
 						(edificio-es ?b ?t)
 						;;; si el edificio necesita ese recurso,
-						;;; entonces tenemos que poseer tal recurso
+						;;; entonces tenemos que poseer tal recurso.
+						;;; De manera, contraria si no lo necesita podemos no poseer el recurso
 						(imply
 							(necesita ?t ?res)
 							(hay ?res)))))

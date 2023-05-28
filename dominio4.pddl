@@ -1,4 +1,4 @@
-(define (domain dominio_3)
+(define (domain dominio_4)
 	; Definimos los requirements para definir el dominio
 	(:requirements :strips :typing :adl :fluents)
 
@@ -40,6 +40,8 @@
 
 		; unidades
 		VCE - tipoUnidad
+		Marine - tipoUnidad
+		Soldado - tipoUnidad
 	)
 
 	; Definimos los predicados del dominio
@@ -63,13 +65,16 @@
 		(libre ?unit - unidad)
 
 		; para indicar que recurso necesita un tipo de edificio
-		(necesita ?b - tipoEdificio ?res - recurso)
+		(necesita ?e - entidad ?res - recurso)
 
 		; para indicar que se posee de un determinado tipo de recurso
 		(hay ?res - recurso)
 
 		; para indicar que tipo de edificio es
 		(edificio-es ?b - edificio ?tipoed - tipoEdificio)
+
+		; para indicar que tipo de unidad es
+		(unidad-es ?unit - unidad ?tipounit - tipoUnidad)
 	)
 
 	; Definimos la serie de acciones que se pueden realizar
@@ -98,7 +103,7 @@
 	)
 
 	;; Accion: Asignar, asigna un VCE a un nodo de recurso. Ademas, en este ejercicio sera suficiente
-	;; Asignar un unico VCE a un unico nodo de recursos de un tipo (mineral o gas vespeno) para tener
+	;; asignar un unico VCE a un unico nodo de recursos de un tipo (mineral o gas vespeno) para tener
 	;; ilimitados recursos de ese tipo.
 	;; Parametros: Unidad, Localizacion de recurso, Tipo de recurso
 	(:action Asignar
@@ -173,4 +178,52 @@
 		)
 	)
 
+	; Accion: Reclutar, para disponer de nuevas unidades.
+	; Parametros: Edificio, Unidad, Localizacion
+	(:action Reclutar
+		:parameters (?b - edificio ?unit - unidad ?loc - loc)
+		:precondition (and
+			; La unidad no puede estar en ninguna localizacion hasta que se reclute
+			(not (exists
+					(?lloc - loc)
+					(entidad-en ?unit ?lloc)))
+
+			; Ya sean VCEs, Marines o Soldados, estos se deben de reclutar o en CentroDeMando
+			; o en Barracones
+			(or (edificio-es ?b CentroDeMando) (edificio-es ?b Barracones))
+
+			; el edificio debe de estar construido
+			(construido ?b)
+
+			; el edificio debe de estar en la localizacion deseada
+			(entidad-en ?b ?loc)
+
+			; si el edificio es CentroDeMando entonces la unidad a reclutar debe ser VCE
+			(imply
+				(edificio-es ?b CentroDeMando)
+				(or (unidad-es ?unit VCE)))
+
+			; si el edificio es Barracones entonces la unidad a reclutar debe ser Marine o Soldado
+			(imply
+				(edificio-es ?b Barracones)
+				(or (unidad-es ?unit Soldado) (unidad-es ?unit Marine)))
+
+			; si se quiere reclutar VCEs o Marines entonces debe de haber Mineral
+			(imply
+				(or (unidad-es ?unit VCE) (unidad-es ?unit Marine))
+				(hay Mineral))
+
+			; si se quiere reclutar Soldados entonces debe de haber Mineral y Gas Vespeno
+			(imply
+				(unidad-es ?unit Soldado)
+				(and (hay Mineral) (hay Gas)))
+		)
+
+		:effect (and
+			; al ser reclutado la unidad se invoca en la localizacion de reclutamiento
+			(entidad-en ?unit ?loc)
+			; ademas, esta libre para hacer tareas
+			(libre ?unit)
+		)
+	)
 )

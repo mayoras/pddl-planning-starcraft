@@ -74,9 +74,9 @@
 
 	; Definimos la serie de acciones que se pueden realizar
 
-	;; Accion: NAVEGAR, mueve una unidad entre dos localizaciones
+	;; Accion: Navegar, mueve una unidad entre dos localizaciones
 	;; Parametros: Unidad, Localizacion origen, Localizacion destino
-	(:action NAVEGAR
+	(:action Navegar
 		:parameters (?unit - unidad ?from ?to - loc)
 		:precondition (and
 			;;; la unidad debe de estar en la localizacion origen
@@ -97,11 +97,11 @@
 		)
 	)
 
-	;; Accion: ASIGNAR, asigna un VCE a un nodo de recurso. Ademas, en este ejercicio sera suficiente
-	;; asignar un unico VCE a un unico nodo de recursos de un tipo (mineral o gas vespeno) para tener
+	;; Accion: Asignar, asigna un VCE a un nodo de recurso. Ademas, en este ejercicio sera suficiente
+	;; Asignar un unico VCE a un unico nodo de recursos de un tipo (mineral o gas vespeno) para tener
 	;; ilimitados recursos de ese tipo.
 	;; Parametros: Unidad, Localizacion de recurso, Tipo de recurso
-	(:action ASIGNAR
+	(:action Asignar
 		:parameters (?vce - unidad ?loc - loc ?res - recurso)
 		:precondition (and
 			;;; el VCE tiene que estar en la localizacion del recurso
@@ -132,9 +132,9 @@
 		)
 	)
 
-	;; Accion: CONSTRUIR, ordena a un VCE libre que construya un edificio en una localización
+	;; Accion: Construir, ordena a un VCE libre que construya un edificio en una localización
 	;; Parametros: Unidad, Edificio, Localizacion, Recurso
-	(:action CONSTRUIR
+	(:action Construir
 		:parameters (?vce - unidad ?b - edificio ?loc - loc ?res - recurso)
 		:precondition (and
 			;; La unidad debe de estar libre

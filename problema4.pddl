@@ -1,9 +1,10 @@
-(define (problem problema_3)
-	(:domain dominio_3)
+(define (problem problema_4)
+	(:domain dominio_4)
 	(:objects
 		loc11 loc12 loc13 loc14 loc15 loc21 loc22 loc23 loc24 loc31 loc32 loc33 loc34 loc42 loc43 loc44 - loc
 		CentroDeMando1 Extractor1 Barracones1 - edificio
 		VCE1 VCE2 VCE3 - unidad
+		Marine1 Marine2 Soldado1 - unidad
 	)
 
 	(:init
@@ -46,24 +47,28 @@
 		; ubicamos donde estan las entidades
 		(entidad-en CentroDeMando1 loc11)
 		(entidad-en VCE1 loc11)
-		(entidad-en VCE2 loc11)
-		(entidad-en VCE3 loc11)
 
 		; Inicializamos las unidades como libres
 		(libre VCE1)
-		(libre VCE2)
-		(libre VCE3)
 
 		; Establecemos el tipo de los edificios objeto
 		(edificio-es CentroDeMando1 CentroDeMando)
 		(edificio-es Extractor1 Extractor)
 		(edificio-es Barracones1 Barracones)
 
+		; Establecemos el tipo de las unidades
+		(unidad-es VCE1 VCE)
+		(unidad-es VCE2 VCE)
+		(unidad-es VCE3 VCE)
+		(unidad-es Marine1 Marine)
+		(unidad-es Marine2 Marine)
+		(unidad-es Soldado1 Soldado)
+
 		; indicamos los edificios construidos
 		(construido CentroDeMando1)
 
 		; Inicializamos la localizacion de los recursos
-		(recurso-asignado-en Mineral loc24)
+		(recurso-asignado-en Mineral loc22)
 		(recurso-asignado-en Mineral loc44)
 		(recurso-asignado-en Gas loc15)
 
@@ -71,12 +76,26 @@
 		(necesita Extractor Mineral)
 		(necesita Barracones Mineral)
 		(necesita Barracones Gas)
+
+		; Definimos los materiales necesarios para los diferentes tipos de unidades
+		(necesita VCE Mineral)
+		(necesita Marine Mineral)
+		(necesita Soldado Mineral)
+		(necesita Soldado Gas)
 	)
 
 	(:goal
 		(and
-			;; OBJETIVO: Construir Barracones1
-			(and (construido Barracones1) (entidad-en Barracones1 loc34))
+			;; OBJETIVOS:
+			;; Marine1 en loc31
+			(entidad-en Marine1 loc31)
+			;; Marine2 en loc24
+			(entidad-en Marine2 loc24)
+			;; Soldado1 en loc12
+			(entidad-en Soldado1 loc12)
+			;; los barracones Barracones1 se deben construir en loc33
+			(construido Barracones1)
+			(entidad-en Barracones1 loc33)
 		)
 	)
 )

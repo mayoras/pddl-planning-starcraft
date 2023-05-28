@@ -1,9 +1,9 @@
-(define (problem problema_2)
-	(:domain dominio_2)
+(define (problem problema_3)
+	(:domain dominio_3)
 	(:objects
 		loc11 loc12 loc13 loc14 loc15 loc21 loc22 loc23 loc24 loc31 loc32 loc33 loc34 loc42 loc43 loc44 - loc
-		CentroDeMando1, Extractor1 - edificio
-		VCE1 VCE2 - unidad
+		CentroDeMando1 Extractor1 Barracones1 - edificio
+		VCE1 VCE2 VCE3 - unidad
 	)
 
 	(:init
@@ -47,31 +47,36 @@
 		(entidad-en CentroDeMando1 loc11)
 		(entidad-en VCE1 loc11)
 		(entidad-en VCE2 loc11)
+		(entidad-en VCE3 loc11)
 
-		; las unidades VCE1 y VCE2 no estan asignadas
+		; Inicializamos las unidades como libres
 		(libre VCE1)
 		(libre VCE2)
+		(libre VCE3)
 
-		; Establecemos el tipo de los edificios
-		(edificio-es Extractor1 Extractor)
+		; Establecemos el tipo de los edificios objeto
 		(edificio-es CentroDeMando1 CentroDeMando)
+		(edificio-es Extractor1 Extractor)
+		(edificio-es Barracones1 Barracones)
 
-		; existen dos recursos de Mineral en loc24 y en loc44
+		; indicamos los edificios construidos
+		(construido CentroDeMando1)
+
+		; Inicializamos la localizacion de los recursos
 		(recurso-asignado-en Mineral loc24)
 		(recurso-asignado-en Mineral loc44)
-
-		; existe un recurso de Gas Vespeno en loc15
 		(recurso-asignado-en Gas loc15)
 
-		; La construccion de los Extractores requieren Mineral
-		(necesita-recurso Extractor1 Mineral)
+		; Definimos los materiales necesarios para los diferentes tipos de edificios
+		(necesita Extractor Mineral)
+		(necesita Barracones Mineral)
+		(necesita Barracones Gas)
 	)
 
 	(:goal
 		(and
-			;; OBJETIVO: generar recursos de Gas Vespeno
-			;; Para ello se debe cumplir que: extrayendo(VCEX, Gas), para cualquier unidad VCEX
-			(or (extrayendo VCE1 Gas) (extrayendo VCE2 GAS))
+			;; OBJETIVO: Construir Barracones1
+			(and (construido Barracones1) (entidad-en Barracones1 loc34))
 		)
 	)
 )

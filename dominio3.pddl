@@ -1,4 +1,4 @@
-(define (domain dominio_2)
+(define (domain dominio_3)
 	; Definimos los requirements para definir el dominio
 	(:requirements :strips :typing :adl :fluents)
 
@@ -62,11 +62,11 @@
 		; para indicar que una unidad no esta extrayendo
 		(libre ?unit - unidad)
 
-		; para indicar que recurso necesita un determinado edificio
-		(necesita-recurso ?b - edificio ?res - recurso)
+		; para indicar que recurso necesita un tipo de edificio
+		(necesita ?b - tipoEdificio ?res - recurso)
 
 		; para indicar que se posee de un determinado tipo de recurso
-		(hay-recurso ?res - tipoRecurso)
+		(hay ?res - recurso)
 
 		; para indicar que tipo de edificio es
 		(edificio-es ?b - edificio ?tipoed - tipoEdificio)
@@ -128,25 +128,41 @@
 			;;; el VCE pasa a estar extrayendo el recurso
 			(extrayendo ?vce ?res)
 			;;; se extrae recurso, luego se posee de tal recurso
-			(hay-recurso ?res)
+			(hay ?res)
 		)
 	)
 
 	;; Accion: CONSTRUIR, ordena a un VCE libre que construya un edificio en una localización
-	;; Parametros: Unidad, Edificio, Localizacion, Recurso
+	;; Parametros: Unidad, Edificio, Localizacion.
 	(:action CONSTRUIR
-		:parameters (?vce - unidad ?b - edificio ?loc - loc ?res - recurso)
+		:parameters (?vce - unidad ?b - edificio ?loc - loc)
 		:precondition (and
-			;; La unidad debe de estar libre
+			;; la unidad debe de estar libre
 			(libre ?vce)
-			;; La unidad debe de estar en la localizacion
+			;; la unidad debe de estar en la localizacion
 			(entidad-en ?vce ?loc)
-			;; El edificio que hay que construir no debe de estar ya construido
+			;; el edificio que hay que construir no debe de estar ya construido
 			(not (construido ?b))
-			;; El edificio necesita el recurso
-			(necesita-recurso ?b ?res)
-			;; se posee tal recurso
-			(hay-recurso ?res)
+
+			;; no hay otro edificio en esa localizacion
+			(not (exists
+					(?other - edificio)
+					(entidad-en ?other ?loc)))
+
+			;; se poseen todos los recursos necesarios para construir el edificio
+			;;; se iteran todos los recursos
+			(forall
+				(?res - recurso)
+				(exists
+					(?t - tipoEdificio)
+					(and
+						;;; filtramos para el tipo de nuestro edificio
+						(edificio-es ?b ?t)
+						;;; si el edificio necesita ese recurso,
+						;;; entonces tenemos que poseer tal recurso
+						(imply
+							(necesita ?t ?res)
+							(hay ?res)))))
 		)
 		:effect (and
 			;; El edificio se ha construido
@@ -155,4 +171,5 @@
 			(entidad-en ?b ?loc)
 		)
 	)
+
 )

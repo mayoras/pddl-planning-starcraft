@@ -14,7 +14,9 @@
 	;     │   ├── Barracones
 	;     │   └── Extractor
 	;     └── unit
-	;         └── VCE
+	;         ├── VCE
+	;         ├── Soldado
+	;         └── Marine
 	; Hemos definido tres tipos troncales del dominio:
 	; - loc: un tipo para la localizacion
 	; - entity: un tipo que engloba todo objeto "fisico" en el mundo, esto incluye recursos, edificios y unidades.

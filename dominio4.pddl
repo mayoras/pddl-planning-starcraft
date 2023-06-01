@@ -210,15 +210,20 @@
 				(edificio-es ?b Barracones)
 				(or (unidad-es ?unit Soldado) (unidad-es ?unit Marine)))
 
-			; si se quiere reclutar VCEs o Marines entonces debe de haber Mineral
-			(imply
-				(or (unidad-es ?unit VCE) (unidad-es ?unit Marine))
-				(hay Mineral))
-
-			; si se quiere reclutar Soldados entonces debe de haber Mineral y Gas Vespeno
-			(imply
-				(unidad-es ?unit Soldado)
-				(and (hay Mineral) (hay Gas)))
+			; comprobamos que para la unidad poseemos de los recursos necesarios
+			(forall
+				(?res - recurso)
+				(exists
+					(?t - tipoUnidad)
+					(and
+						;;; filtramos para el tipo de nuestra unidad
+						(unidad-es ?unit ?t)
+						;;; si el edificio necesita ese recurso,
+						;;; entonces tenemos que poseer tal recurso.
+						;;; De manera, contraria si no lo necesita podemos no poseer el recurso
+						(imply
+							(necesita ?t ?res)
+							(hay ?res)))))
 		)
 
 		:effect (and

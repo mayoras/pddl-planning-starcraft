@@ -165,6 +165,8 @@
 			(entidad-en ?vce ?loc)
 			;; el edificio que hay que construir no debe de estar ya construido
 			(not (construido ?b))
+			;; Los VCE son las unicas unidades en poder construir
+			(unidad-es ?vce VCE)
 
 			;; no hay otro edificio en esa localizacion
 			(not (exists

@@ -47,15 +47,11 @@
 		; ubicamos donde estan las entidades
 		(entidad-en CentroDeMando1 loc11)
 		(entidad-en VCE1 loc11)
-		(entidad-en VCE2 loc11)
-		(entidad-en VCE3 loc11)
 
 		; Inicializamos las unidades como libres
 		(libre VCE1)
-		(libre VCE2)
-		(libre VCE3)
 
-		; Inicializamos las investigaciones a desconocidas
+		; Inicializamos las investigaciones desconocidas
 		(desconocido Spartan)
 
 		; Establecemos el tipo de los edificios objeto
@@ -72,9 +68,6 @@
 		(unidad-es Marine2 Marine)
 		(unidad-es Soldado1 Soldado)
 
-		; ; Establecemos el tipo de las investigaciones
-		; (investigacion-es Spartan1 Spartan)
-
 		; indicamos los edificios construidos
 		(construido CentroDeMando1)
 
@@ -90,7 +83,10 @@
 		(necesita Barracones Gas)
 		(necesita Laboratorio Mineral)
 		(necesita Laboratorio Gas)
-		(necesita Laboratorio Especia)
+		; Definimos los materiales necesarios para los diferentes tipos de investigaciones
+		(necesita Spartan Mineral)
+		(necesita Spartan Gas)
+		(necesita Spartan Especia)
 
 		; Definimos los materiales necesarios para los diferentes tipos de unidades
 		(necesita VCE Mineral)
@@ -107,10 +103,10 @@
 			(entidad-en Marine1 loc14)
 			(entidad-en Marine2 loc14)
 			(entidad-en Soldado1 loc14)
-			;; los barracones Barracones1 se deben construir en loc33
+			;; los barracones Barracones1 se deben construir en loc14
 			(construido Barracones1)
 			(entidad-en Barracones1 loc14)
-			;; el laboratorio Laboratorio1 se debe de construir en loc12
+			;; el laboratorio Laboratorio 1 se deben construir en loc12
 			(construido Laboratorio1)
 			(entidad-en Laboratorio1 loc12)
 		)

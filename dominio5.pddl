@@ -9,7 +9,9 @@
 	;     ├── recurso
 	;     │   ├── Mineral
 	;     │   ├── Gas
-	;     │   └── Especia
+	;     │   ├── Especia
+	;	  │   └── investigacion
+	;	  │       └── Spartan
 	;     ├── edificio
 	;     │   ├── CentroDeMando
 	;     │   ├── Barracones

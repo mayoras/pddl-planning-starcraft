@@ -1,5 +1,5 @@
-(define (problem problema_7)
-	(:domain dominio_7)
+(define (problem problema_8)
+	(:domain dominio_8)
 	(:objects
 		loc11 loc12 loc13 loc14 loc15 loc21 loc22 loc23 loc24 loc31 loc32 loc33 loc34 loc42 loc43 loc44 - loc
 		CentroDeMando1 Extractor1 Barracones1 - edificio
@@ -43,6 +43,42 @@
 		(camino loc15 loc44)
 		(camino loc23 loc33)
 		(camino loc33 loc23)
+
+		; Inicializamos las distancias entre localizaciones
+		(= (distancia loc11 loc12) 10)
+		(= (distancia loc12 loc11) 10)
+		(= (distancia loc11 loc21) 10)
+		(= (distancia loc21 loc11) 10)
+		(= (distancia loc12 loc22) 10)
+		(= (distancia loc22 loc12) 10)
+		(= (distancia loc21 loc31) 10)
+		(= (distancia loc31 loc21) 10)
+		(= (distancia loc22 loc32) 10)
+		(= (distancia loc32 loc22) 10)
+		(= (distancia loc31 loc32) 10)
+		(= (distancia loc32 loc31) 10)
+		(= (distancia loc32 loc42) 10)
+		(= (distancia loc42 loc32) 10)
+		(= (distancia loc22 loc23) 20)
+		(= (distancia loc23 loc22) 20)
+		(= (distancia loc42 loc43) 20)
+		(= (distancia loc43 loc42) 20)
+		(= (distancia loc43 loc44) 10)
+		(= (distancia loc44 loc43) 10)
+		(= (distancia loc44 loc34) 10)
+		(= (distancia loc34 loc44) 10)
+		(= (distancia loc23 loc13) 10)
+		(= (distancia loc13 loc23) 10)
+		(= (distancia loc23 loc24) 10)
+		(= (distancia loc24 loc23) 10)
+		(= (distancia loc14 loc24) 10)
+		(= (distancia loc24 loc14) 10)
+		(= (distancia loc14 loc15) 10)
+		(= (distancia loc15 loc14) 10)
+		(= (distancia loc44 loc15) 40)
+		(= (distancia loc15 loc44) 40)
+		(= (distancia loc23 loc33) 10)
+		(= (distancia loc33 loc23) 10)
 
 		; ubicamos donde estan las entidades
 		(entidad-en CentroDeMando1 loc11)
@@ -101,8 +137,24 @@
 		(= (recolectando Mineral loc44) 0)
 		(= (recolectando Gas loc15) 0)
 
-		; Iniciazar el contador de acciones/coste
-		(= (coste-total) 0)
+		;;; TIEMPOS ;;;
+		(= (elapsed-time) 0)
+
+		;; Tiempos de recoleccion
+		(= (delay-recolectar Mineral) 10)
+		(= (delay-recolectar Gas) 5)
+
+		;; Tiempos de creacion
+		(= (delay-creacion Barracones) 50)
+		(= (delay-creacion Extractor) 20)
+		(= (delay-creacion VCE) 10)
+		(= (delay-creacion Marine) 20)
+		(= (delay-creacion Soldado) 30)
+
+		; Inicializamos las velocidades de las unidades
+		(= (speed VCE) 1)
+		(= (speed Marine) 5)
+		(= (speed Soldado) 10)
 	)
 
 	(:goal
@@ -112,14 +164,17 @@
 			(entidad-en Marine1 loc31)
 			;; Marine2 en loc24
 			(entidad-en Marine2 loc24)
-			;; Soldado1 en loc12
-			(entidad-en Soldado1 loc12)
+			;; Soldado1 en loc15
+			(entidad-en Soldado1 loc15)
 			;; los barracones Barracones1 se deben construir en loc33
 			(construido Barracones1)
 			(entidad-en Barracones1 loc33)
 
-			;; RESTRINGIMOS EL NUMERO DE ACCIONES A REALIZAR
-			; (< (coste-total) 59)
+			;; RESTRINGIMOS EL TIEMPO TRANSCURRIDO
+			(< (elapsed-time) 553)
 		)
+	)
+	(:metric minimize
+		(elapsed-time)
 	)
 )

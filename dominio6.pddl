@@ -251,7 +251,7 @@
 					(and
 						;;; filtramos para el tipo de nuestra unidad
 						(unidad-es ?unit ?t)
-						;;; si el edificio necesita ese recurso,
+						;;; si el reclutamiento necesita ese recurso,
 						;;; entonces tenemos que poseer tal recurso.
 						;;; De manera, contraria si no lo necesita podemos no poseer el recurso
 						(imply

@@ -74,7 +74,7 @@
 		(and
 			;; OBJETIVO: generar recursos de Gas Vespeno
 			;; Para ello se debe cumplir que: extrayendo(VCEX, Gas), para cualquier unidad VCEX
-			(or (extrayendo VCE1 Gas) (extrayendo VCE2 GAS))
+			(or (extrayendo VCE1 Gas) (extrayendo VCE2 Gas))
 		)
 	)
 )

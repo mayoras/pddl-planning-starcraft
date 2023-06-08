@@ -114,7 +114,7 @@
 			(entidad-en Laboratorio1 loc12)
 
 			;; RESTRINGIMOS EL NUMERO DE ACCIONES A REALIZAR
-			(< (coste-total) 27)
+			; (< (coste-total) 28)
 		)
 	)
 )

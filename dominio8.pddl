@@ -153,16 +153,18 @@
 	;; Accion: Asignar, asigna un VCE a un nodo de recurso. Ademas, en este ejercicio sera suficiente
 	;; asignar un unico VCE a un unico nodo de recursos de un tipo (mineral o gas vespeno) para tener
 	;; ilimitados recursos de ese tipo.
-	;; Parametros: Unidad, Localizacion de recurso, Tipo de recurso
+	;; Parametros: Unidad, Localizacion de recurso
 	(:action Asignar
-		:parameters (?vce - unidad ?loc - loc ?res - recurso)
+		:parameters (?vce - unidad ?loc - loc)
 		:precondition (and
 			;;; el VCE tiene que estar en la localizacion del recurso
 			(entidad-en ?vce ?loc)
-			;;; el recurso debe de estar asignado a tal localizacion
-			(recurso-asignado-en ?res ?loc)
 			;;; el VCE no debe de estar extrayendo ningun recurso, debe estar libre
 			(libre ?vce)
+			;;; debe de existir un recurso asignado en esa localizacion
+			(exists
+				(?res - recurso)
+				(recurso-asignado-en ?res ?loc))
 
 			;;; Si hay Gas Vespano en la localizacion, entonces debe haber un
 			;;; Extractor en esa la localizacion:
@@ -171,7 +173,7 @@
 				(not (recurso-asignado-en Gas ?loc))
 				(exists
 					(?b - edificio)
-					(and (edificio-es ?b Extractor) (entidad-en ?b ?loc))
+					(and (edificio-es ?b Extractor) (construido ?b) (entidad-en ?b ?loc))
 				)
 			)
 		)
@@ -179,11 +181,22 @@
 			;;; el VCE deja de estar libre
 			(not (libre ?vce))
 			;;; el VCE pasa a estar extrayendo el recurso
-			(extrayendo ?vce ?res)
-			;;; se extrae recurso, luego se posee de tal recurso
-			(hay ?res)
-			;;; Se incrementa el numero de VCEs recolectando en dicha localizacion
-			(increase (recolectando ?res ?loc) 1)
+			;;;; Si es Gas Vespeno
+			(when
+				(recurso-asignado-en Gas ?loc)
+				(and
+					(extrayendo ?vce Gas)
+					(hay Gas)
+					;;; Se incrementa el numero de VCEs recolectando en dicha localizacion
+					(increase (recolectando Gas ?loc) 1)))
+			;;;; Si es Mineral
+			(when
+				(recurso-asignado-en Mineral ?loc)
+				(and
+					(extrayendo ?vce Mineral)
+					(hay Mineral)
+					;;; Se incrementa el numero de VCEs recolectando en dicha localizacion
+					(increase (recolectando Mineral ?loc) 1)))
 		)
 	)
 

@@ -376,9 +376,8 @@
 
 			; incrementar el tiempo de recoleccion
 			; notese que no incrementamos el tiempo que toma recolectar por cada VCE
-			; la razon de que mas de un VCE pueda recolectar en la misma localizacion
-			; es que se pueda recolectar el doble en la misma cantidad de tiempo
-			(increase (elapsed-time) (delay-recolectar ?res))
+      ; sumamos el tiempo de recoleccion de los VCE en el nodo
+			(increase (elapsed-time) (* (recolectando ?res ?loc) (delay-recolectar ?res)))
 		)
 	)
 

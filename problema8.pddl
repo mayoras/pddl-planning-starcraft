@@ -171,7 +171,7 @@
 			(entidad-en Barracones1 loc33)
 
 			;; RESTRINGIMOS EL TIEMPO TRANSCURRIDO
-			; (< (elapsed-time) 553)
+			; (< (elapsed-time) 558)
 		)
 	)
 	(:metric minimize
